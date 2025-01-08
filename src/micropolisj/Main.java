@@ -6,6 +6,8 @@
 // it under the terms of the GNU GPLv3, with additional terms.
 // See the README file, included in this distribution, for details.
 
+// THIS IS A TEST
+
 package micropolisj;
 
 import javax.swing.*;
