@@ -736,6 +736,17 @@ public class MainWindow extends JFrame
 			}));
 		windowsMenu.add(menuItem);
 
+		menuItem = new JMenuItem(strings.getString("menu.windows.loans"));
+		setupKeys(menuItem, "menu.windows.loans");
+		menuItem.addActionListener(wrapActionListener(
+			new ActionListener() {
+			public void actionPerformed(ActionEvent ev)
+			{
+				onViewLoansClicked();
+			}
+			}));
+		windowsMenu.add(menuItem);
+
 		menuItem = new JMenuItem(strings.getString("menu.windows.evaluation"));
 		setupKeys(menuItem, "menu.windows.evaluation");
 		menuItem.addActionListener(wrapActionListener(
@@ -1630,6 +1641,12 @@ public class MainWindow extends JFrame
 		showBudgetWindow(false);
 	}
 
+	void onViewLoansClicked()
+	{
+		dirty1 = true;	// a tool has been used -> ask to save city before quitting
+		showLoansWindow();
+	}
+
 	void onViewEvaluationClicked()
 	{
 		evaluationPane.setVisible(true);
@@ -1661,6 +1678,25 @@ public class MainWindow extends JFrame
 		dlg.setModal(true);
 		dlg.setVisible(true);
 
+		if (timerEnabled) {
+			startTimer();
+		}
+	}
+
+	private void showLoansWindow()
+	{
+		boolean timerEnabled = isTimerActive();
+		// if speed setting not 'paused', pause now
+		if (timerEnabled) {
+			stopTimer();
+		}
+
+		LoansDialog dlg = new LoansDialog(this, getEngine());
+		dlg.setModal(true);	// block input to other dialogs when shown
+		dlg.setVisible(true);	// show dialog
+		// code continues below only once dialog is closed
+
+		// if speed setting not 'paused', unpause now
 		if (timerEnabled) {
 			startTimer();
 		}
