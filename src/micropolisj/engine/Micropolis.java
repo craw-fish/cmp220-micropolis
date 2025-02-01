@@ -193,6 +193,8 @@ public class Micropolis
 
 	public CityEval evaluation;
 
+	public LoansManager loansManager;
+
 	ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 
 	static final int VALVERATE = 2;
@@ -214,6 +216,7 @@ public class Micropolis
 	{
 		PRNG = DEFAULT_PRNG;
 		evaluation = new CityEval(this);
+		loansManager = new LoansManager(this);
 		init(width, height);
 		initTileBehaviors();
 	}
@@ -560,6 +563,7 @@ public class Micropolis
 			if (scycle % 2 == 0) {
 				setValves();
 			}
+			loansManager.payLoansYearly();
 			clearCensus();
 			break;
 
