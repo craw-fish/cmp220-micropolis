@@ -92,10 +92,18 @@ public class LoansDialog extends JDialog
 		JPanel infoPanel = new JPanel();
 		newLoanPane.add(infoPanel);
 
-		JLabel infoInterest = new JLabel(strings.getString("loansdlg.new_interest"));
-		JLabel infoPeriod = new JLabel(strings.getString("loansdlg.new_period"));
-		infoPanel.add(infoInterest);
-		infoPanel.add(infoPeriod);
+		String interest = (int)Math.floor(engine.loansManager.getInterest() * 100) + "%";
+		String payPeriod = engine.loansManager.getPayPeriod() + " years";
+
+		JLabel infoInterestHdr = new JLabel(strings.getString("loansdlg.new_interest"));
+		JLabel infoInterestLbl = new JLabel(interest);
+		JLabel infoPeriodHdr = new JLabel(strings.getString("loansdlg.new_period"));
+		JLabel infoPeriodLbl = new JLabel(payPeriod);
+		infoPanel.add(infoInterestHdr);
+		infoPanel.add(infoInterestLbl);
+		infoPanel.add(new JLabel(" | "));
+		infoPanel.add(infoPeriodHdr);
+		infoPanel.add(infoPeriodLbl);
 
 		// LOAN SELECTION
 		JPanel selectionPanel = new JPanel();
