@@ -158,6 +158,85 @@ public class LoansDialog extends JDialog
 		// FIXME: dimensions
 		activeLoansPane.setBorder(BorderFactory.createEmptyBorder(0,0,8,0));
 
+		// SECTION TITLE
+		JPanel titlePanel = new JPanel();
+		activeLoansPane.add(titlePanel);
+
+		JLabel titleText = new JLabel(strings.getString("loansdlg.active_title"));
+		titleText.setFont(titleText.getFont().deriveFont(Font.BOLD));
+		titlePanel.add(titleText);
+
+		// ACTIVE LOANS LIST (table format)
+		JPanel listPanel = new JPanel();
+		activeLoansPane.add(listPanel);
+		listPanel.setLayout(new GridLayout(0, 5));
+
+		// loan property headers
+		JLabel loanNumHdr = new JLabel(strings.getString("loansdlg.active_num_hdr"));
+		JLabel loanUnpaidHdr = new JLabel(strings.getString("loansdlg.active_balance_hdr"));
+		JLabel loanCostHdr = new JLabel(strings.getString("loansdlg.active_cost_hdr"));
+		JLabel loanTimeHdr = new JLabel(strings.getString("loansdlg.active_time_hdr"));
+		JLabel loanPayHdr = new JLabel(strings.getString("loansdlg.active_pay_hdr"));
+		loanNumHdr.setHorizontalAlignment(SwingConstants.CENTER);
+		loanUnpaidHdr.setHorizontalAlignment(SwingConstants.CENTER);
+		loanCostHdr.setHorizontalAlignment(SwingConstants.CENTER);
+		loanTimeHdr.setHorizontalAlignment(SwingConstants.CENTER);
+		loanPayHdr.setHorizontalAlignment(SwingConstants.CENTER);
+		listPanel.add(loanNumHdr);
+		listPanel.add(loanUnpaidHdr);
+		listPanel.add(loanCostHdr);
+		listPanel.add(loanTimeHdr);
+		listPanel.add(loanPayHdr);
+		// FIXME: more vertical spacing between headers and each row of list
+
+		// property values
+		int loanNum = 0;
+		for (Loan loan : engine.loansManager.activeLoans) {
+			loanNum++;
+			// FIXME: probably won't be able to access each particular loan with checkbox
+			/*
+			could maybe keep simple for-loop 'printing' of values, but define checkboxes
+			at higher scope (like new loan values) and in some enumerated / iterable way.
+			have this for-loop draw those checkboxes in order.
+			then when 'checking' a box, it has an ordered value that's associable with
+			the particular row # it was drawn on, which tells us the position to look at
+			in the activeLoans list. we can grab the loan properties from there.
+			*/
+			JLabel loanNumVal = new JLabel(String.valueOf(loanNum));
+			JLabel loanUnpaidVal = new JLabel(formatFunds(loan.unpaidBalance));
+			JLabel loanCostVal = new JLabel(formatFunds(loan.yearlyCost));
+			JLabel loanTimeVal = new JLabel(String.valueOf(loan.yearsLeft));
+			JCheckBox payNowCBox = new JCheckBox();
+
+			loanNumVal.setHorizontalAlignment(SwingConstants.CENTER);
+			loanUnpaidVal.setHorizontalAlignment(SwingConstants.CENTER);
+			loanCostVal.setHorizontalAlignment(SwingConstants.CENTER);
+			loanTimeVal.setHorizontalAlignment(SwingConstants.CENTER);
+			payNowCBox.setHorizontalAlignment(SwingConstants.CENTER);
+			listPanel.add(loanNumVal);
+			listPanel.add(loanUnpaidVal);
+			listPanel.add(loanCostVal);
+			listPanel.add(loanTimeVal);
+			listPanel.add(payNowCBox);
+		}
+
+		// totals
+		// sum list vals
+		int totalUnpaid = 0;
+		int totalCost = 0;
+
+		JLabel totalLbl = new JLabel("Total");
+		JLabel totalUnpaidVal = new JLabel(formatFunds(totalUnpaid));
+		JLabel totalCostVal = new JLabel(formatFunds(totalCost));
+		totalLbl.setFont(totalLbl.getFont().deriveFont(Font.ITALIC));
+		totalUnpaidVal.setFont(totalUnpaidVal.getFont().deriveFont(Font.ITALIC));
+		totalCostVal.setFont(totalCostVal.getFont().deriveFont(Font.ITALIC));
+		totalLbl.setHorizontalAlignment(SwingConstants.CENTER);
+		totalUnpaidVal.setHorizontalAlignment(SwingConstants.CENTER);
+		totalCostVal.setHorizontalAlignment(SwingConstants.CENTER);
+		listPanel.add(totalLbl);
+		listPanel.add(totalUnpaidVal);
+		listPanel.add(totalCostVal);
 
 		return activeLoansPane;
 	}
@@ -169,11 +248,10 @@ public class LoansDialog extends JDialog
 		// FIXME: dimensions
 		finalizePane.setBorder(BorderFactory.createEmptyBorder(0,0,8,0));
 
-		// "pay now" amount
 
-		// "insufficient funds" message
 
 		// "continue" and "cancel" buttons
+		JPanel buttonsPanel = new JPanel();
 
 		return finalizePane;
 	}
@@ -184,15 +262,12 @@ public class LoansDialog extends JDialog
 
 		engine.loansManager.startLoan(initAmt);
 		selectionSlider.setValue(0);
-		// FIXME: update active loans display
     }
 
-	// private void onContinueClicked()
 	// {
 	// 	System.out.println("continue");
     // }
 
-	// private void onCancelClicked()
 	// {
 	// 	System.out.println("cancel");
     // }

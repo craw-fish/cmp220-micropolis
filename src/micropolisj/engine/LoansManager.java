@@ -32,7 +32,7 @@ public class LoansManager {
 
     public void startLoan(int initAmt)
     {
-        if (activeLoans.size() < 3) {
+        if (initAmt > 0 && activeLoans.size() < 3) {
             int withdrawTime = city.cityTime;
             int unpaidBalance = initAmt;
             double interest = getInterest();

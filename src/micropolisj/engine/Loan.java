@@ -9,17 +9,17 @@ public class Loan
     // value of loan, added to player funds
     int initAmt;
     // amount of loan left to be paid off (starts at initAmt)
-    int unpaidBalance;
+    public int unpaidBalance;
     // interest that will be applied to loan
     double interest;
     // period (in years) in which loan must be paid off
     int payPeriod;
     // years of automatic payments left until loan paid off (starts at payPeriod)
-    int yearsLeft;
+    public int yearsLeft;
     // maximum amount to be paid off in yearly installments (if not paid off early)
-    int maxDue;
+    public int maxDue;
     // yearly installments to be paid on loan
-    int yearlyCost;
+    public int yearlyCost;
     // portion of yearly payments that actually deduct from unpaidBalance
     int yearlyDeduct;
 
