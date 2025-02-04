@@ -130,12 +130,12 @@ public class LoansDialog extends JDialog
 		selectionPanel.add(selectionSlider);
 
 		// new loan values
-		selectionAmtLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		selectionCostLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		selectionMaxLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		selectionPanel.add(selectionAmtLbl);
-		selectionPanel.add(selectionCostLbl);
-		selectionPanel.add(selectionMaxLbl);
+		selectionAmtVal.setHorizontalAlignment(SwingConstants.CENTER);
+		selectionCostVal.setHorizontalAlignment(SwingConstants.CENTER);
+		selectionMaxVal.setHorizontalAlignment(SwingConstants.CENTER);
+		selectionPanel.add(selectionAmtVal);
+		selectionPanel.add(selectionCostVal);
+		selectionPanel.add(selectionMaxVal);
 
 		// WITHDRAW BUTTON
 		JPanel withdrawPanel = new JPanel();
