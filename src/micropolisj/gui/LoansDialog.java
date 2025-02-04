@@ -14,9 +14,9 @@ public class LoansDialog extends JDialog
     Micropolis engine;
 
 	JSlider selectionSlider;
-	JLabel selectionAmtLbl = new JLabel(formatFunds(0));
-	JLabel selectionCostLbl = new JLabel(formatFunds(0));
-	JLabel selectionMaxLbl = new JLabel(formatFunds(0));
+	JLabel selectionAmtVal = new JLabel(formatFunds(0));
+	JLabel selectionCostVal = new JLabel(formatFunds(0));
+	JLabel selectionMaxVal = new JLabel(formatFunds(0));
 
     static ResourceBundle strings = MainWindow.strings;
 
@@ -28,9 +28,9 @@ public class LoansDialog extends JDialog
 		int selectionMax = (int)Math.round(selectionAmt * (1 + interest));
 		int selectionCost = (int)Math.round(selectionMax / payPeriod);
 
-		selectionAmtLbl.setText(formatFunds(selectionAmt));
-		selectionCostLbl.setText(formatFunds(selectionCost));
-		selectionMaxLbl.setText(formatFunds(selectionMax));
+		selectionAmtVal.setText(formatFunds(selectionAmt));
+		selectionCostVal.setText(formatFunds(selectionCost));
+		selectionMaxVal.setText(formatFunds(selectionMax));
 	}
 
     public LoansDialog(Window owner, Micropolis engine)
@@ -87,15 +87,15 @@ public class LoansDialog extends JDialog
 		String interest = (int)Math.floor(engine.loansManager.getInterest() * 100) + "%";
 		String payPeriod = engine.loansManager.getPayPeriod() + " years";
 
-		JLabel infoInterestHdr = new JLabel(strings.getString("loansdlg.new_interest"));
-		JLabel infoInterestLbl = new JLabel(interest);
-		JLabel infoPeriodHdr = new JLabel(strings.getString("loansdlg.new_period"));
-		JLabel infoPeriodLbl = new JLabel(payPeriod);
-		infoPanel.add(infoInterestHdr);
+		JLabel infoInterestLbl = new JLabel(strings.getString("loansdlg.new_interest"));
+		JLabel infoInterestVal = new JLabel(interest);
+		JLabel infoPeriodLbl = new JLabel(strings.getString("loansdlg.new_period"));
+		JLabel infoPeriodVal = new JLabel(payPeriod);
 		infoPanel.add(infoInterestLbl);
+		infoPanel.add(infoInterestVal);
 		infoPanel.add(new JLabel(" | "));
-		infoPanel.add(infoPeriodHdr);
 		infoPanel.add(infoPeriodLbl);
+		infoPanel.add(infoPeriodVal);
 
 		// LOAN SELECTION
 		JPanel selectionPanel = new JPanel();
@@ -130,12 +130,12 @@ public class LoansDialog extends JDialog
 		selectionPanel.add(selectionSlider);
 
 		// new loan values
-		selectionAmtLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		selectionCostLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		selectionMaxLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		selectionPanel.add(selectionAmtLbl);
-		selectionPanel.add(selectionCostLbl);
-		selectionPanel.add(selectionMaxLbl);
+		selectionAmtVal.setHorizontalAlignment(SwingConstants.CENTER);
+		selectionCostVal.setHorizontalAlignment(SwingConstants.CENTER);
+		selectionMaxVal.setHorizontalAlignment(SwingConstants.CENTER);
+		selectionPanel.add(selectionAmtVal);
+		selectionPanel.add(selectionCostVal);
+		selectionPanel.add(selectionMaxVal);
 
 		// WITHDRAW BUTTON
 		JPanel withdrawPanel = new JPanel();
