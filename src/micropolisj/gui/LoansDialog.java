@@ -103,7 +103,6 @@ public class LoansDialog extends JDialog
 		selectionPanel.setLayout(new GridLayout(0, 4));
 
 		// ROW 1 (headers)
-		// FIXME: column spacing too wide
 		JLabel selectionAmtHdr = new JLabel(strings.getString("loansdlg.new_amt_hdr"));
 		JLabel selectionCostHdr = new JLabel(strings.getString("loansdlg.new_cost_hdr"));
 		JLabel selectionMaxHdr = new JLabel(strings.getString("loansdlg.new_max_hdr"));
@@ -118,7 +117,10 @@ public class LoansDialog extends JDialog
 		// ROW 2 (slider & values)
 		// new loan amount slider
 		selectionSlider = new JSlider(JSlider.HORIZONTAL, 0, 1000, 0);
+		selectionSlider.setPreferredSize(new Dimension(120, selectionSlider.getPreferredSize().height));
 		selectionSlider.setMaximum(engine.loansManager.getMaxLoan());
+		selectionSlider.setMinorTickSpacing(50);
+		selectionSlider.setSnapToTicks(true);
 
 		ChangeListener change = new ChangeListener() {
 			public void stateChanged(ChangeEvent ev) {
