@@ -141,12 +141,12 @@ public class LoansDialog extends JDialog
 		JPanel withdrawPanel = new JPanel();
 		newLoanPane.add(withdrawPanel);
 
-		JButton withdrawButton = new JButton(strings.getString("loansdlg.new_withdraw_btn"));
-		withdrawButton.addActionListener(new ActionListener() {
+		JButton withdrawBtn = new JButton(strings.getString("loansdlg.new_withdraw_btn"));
+		withdrawBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				onWithdrawClicked();
 			}});
-		withdrawPanel.add(withdrawButton);
+		withdrawPanel.add(withdrawBtn);
 
 		return newLoanPane;
 	}
