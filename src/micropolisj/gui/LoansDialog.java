@@ -248,10 +248,46 @@ public class LoansDialog extends JDialog
 		// FIXME: dimensions
 		finalizePane.setBorder(BorderFactory.createEmptyBorder(0,0,8,0));
 
+		// "PAY NOW"
+		JPanel payPanel = new JPanel();
+		finalizePane.add(payPanel);
 
+		// sum selected loans
+		int paySelected = 0;
+
+		JLabel payLbl = new JLabel(strings.getString("loansdlg.finalize_amt"));
+		JLabel payVal = new JLabel(formatFunds(paySelected));
+		payPanel.add(payLbl);
+		payPanel.add(payVal);
+
+		// "INSUFFICENT FUNDS"
+		JPanel insuffPanel = new JPanel();
+		finalizePane.add(insuffPanel);
+
+		// FIXME: insuffPanel needs to be defined at higher scope to be affected elsewhere
+		JLabel insuffText = new JLabel(strings.getString("loansdlg.finalize_insufficient"));
+		insuffText.setFont(insuffText.getFont().deriveFont(Font.ITALIC));
+		insuffText.setForeground(Color.red);
+		insuffPanel.setVisible(false);
+
+		insuffPanel.add(insuffText);
 
 		// "continue" and "cancel" buttons
 		JPanel buttonsPanel = new JPanel();
+		finalizePane.add(buttonsPanel);
+
+		JButton continueBtn = new JButton(strings.getString("loansdlg.finalize_continue_btn"));
+		JButton cancelBtn = new JButton(strings.getString("loansdlg.finalize_cancel_btn"));
+		continueBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				onContinueClicked();
+			}});
+		cancelBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				onCancelClicked();
+			}});
+		buttonsPanel.add(continueBtn);
+		buttonsPanel.add(cancelBtn);
 
 		return finalizePane;
 	}
@@ -262,15 +298,20 @@ public class LoansDialog extends JDialog
 
 		engine.loansManager.startLoan(initAmt);
 		selectionSlider.setValue(0);
+		// FIXME: update active loans display here
     }
 
-	// {
-	// 	System.out.println("continue");
-    // }
+	private void onContinueClicked()
+	{
+		// if sufficient funds, apply "pay now" amt and close window
+		dispose();
+		// else display "insufficient funds"
+    }
 
-	// {
-	// 	System.out.println("cancel");
-    // }
+	private void onCancelClicked()
+	{
+		dispose();
+    }
 
 	private void setAutoRequestFocus_compat(boolean v)
 	{
