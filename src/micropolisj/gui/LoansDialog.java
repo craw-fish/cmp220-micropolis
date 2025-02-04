@@ -69,7 +69,6 @@ public class LoansDialog extends JDialog
 	{
 		JPanel newLoanPane = new JPanel();
 		newLoanPane.setLayout(new BoxLayout(newLoanPane, BoxLayout.PAGE_AXIS));
-		// FIXME: verify/adjust dimensions
 		newLoanPane.setBorder(BorderFactory.createEmptyBorder(0,0,8,0));
 
 		// SECTION TITLE
@@ -157,7 +156,6 @@ public class LoansDialog extends JDialog
 	{
 		JPanel activeLoansPane = new JPanel();
 		activeLoansPane.setLayout(new BoxLayout(activeLoansPane, BoxLayout.PAGE_AXIS));
-		// FIXME: dimensions
 		activeLoansPane.setBorder(BorderFactory.createEmptyBorder(0,0,8,0));
 
 		// SECTION TITLE
@@ -247,8 +245,6 @@ public class LoansDialog extends JDialog
 	{
 		JPanel finalizePane = new JPanel();
 		finalizePane.setLayout(new BoxLayout(finalizePane, BoxLayout.PAGE_AXIS));
-		// FIXME: dimensions
-		finalizePane.setBorder(BorderFactory.createEmptyBorder(0,0,8,0));
 
 		// "PAY NOW"
 		JPanel payPanel = new JPanel();
