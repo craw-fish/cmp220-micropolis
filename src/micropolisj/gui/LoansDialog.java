@@ -28,17 +28,9 @@ public class LoansDialog extends JDialog
 		int selectionMax = (int)Math.round(selectionAmt * (1 + interest));
 		int selectionCost = (int)Math.round(selectionMax / payPeriod);
 
-		if (selectionAmt >= 0) {
-			selectionAmtLbl.setText(formatFunds(selectionAmt));
-			selectionCostLbl.setText(formatFunds(selectionCost));
-			selectionMaxLbl.setText(formatFunds(selectionMax));
-		}
-
-		else {
-			selectionAmtLbl.setText(formatFunds(0));
-			selectionCostLbl.setText(formatFunds(0));
-			selectionMaxLbl.setText(formatFunds(0));
-		}
+		selectionAmtLbl.setText(formatFunds(selectionAmt));
+		selectionCostLbl.setText(formatFunds(selectionCost));
+		selectionMaxLbl.setText(formatFunds(selectionMax));
 	}
 
     public LoansDialog(Window owner, Micropolis engine)
