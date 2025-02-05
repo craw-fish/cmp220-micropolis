@@ -20,19 +20,6 @@ public class LoansDialog extends JDialog
 
     static ResourceBundle strings = MainWindow.strings;
 
-	private void applyChange()
-	{
-		double interest = engine.loansManager.getInterest();
-		int payPeriod = engine.loansManager.getPayPeriod();
-		int selectionAmt = ((Number) selectionSlider.getValue()).intValue();
-		int selectionMax = (int)Math.round(selectionAmt * (1 + interest));
-		int selectionCost = (int)Math.round(selectionMax / payPeriod);
-
-		selectionAmtVal.setText(formatFunds(selectionAmt));
-		selectionCostVal.setText(formatFunds(selectionCost));
-		selectionMaxVal.setText(formatFunds(selectionMax));
-	}
-
     public LoansDialog(Window owner, Micropolis engine)
     {
         super(owner);
@@ -123,7 +110,7 @@ public class LoansDialog extends JDialog
 
 		ChangeListener change = new ChangeListener() {
 			public void stateChanged(ChangeEvent ev) {
-				applyChange();
+				onSliderMoved();
 			}
 		};
 
@@ -288,6 +275,19 @@ public class LoansDialog extends JDialog
 		buttonsPanel.add(cancelBtn);
 
 		return finalizePane;
+	}
+
+	private void onSliderMoved()
+	{
+		double interest = engine.loansManager.getInterest();
+		int payPeriod = engine.loansManager.getPayPeriod();
+		int selectionAmt = ((Number) selectionSlider.getValue()).intValue();
+		int selectionMax = (int)Math.round(selectionAmt * (1 + interest));
+		int selectionCost = (int)Math.round(selectionMax / payPeriod);
+
+		selectionAmtVal.setText(formatFunds(selectionAmt));
+		selectionCostVal.setText(formatFunds(selectionCost));
+		selectionMaxVal.setText(formatFunds(selectionMax));
 	}
 
     private void onWithdrawClicked()
