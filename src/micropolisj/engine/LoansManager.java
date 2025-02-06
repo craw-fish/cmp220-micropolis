@@ -1,5 +1,6 @@
 package micropolisj.engine;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class LoansManager {
     private final Micropolis city;
@@ -77,14 +78,15 @@ public class LoansManager {
     // called weekly
     public void payLoansYearly()
     {
-        for (Loan loan : activeLoans) {
+        Iterator<Loan> iterator = activeLoans.iterator();
+        while (iterator.hasNext()) {
+            Loan loan = iterator.next();
             int loanElapsed = city.cityTime - loan.withdrawTime;
             // every 48 weeks (1 year) since loan start, pay yearly cost
             if (loanElapsed % 48 == 0) {
                 loan.payCost();
-                loan.yearsLeft -= 1;
                 if (loan.yearsLeft == 0) {
-                    activeLoans.remove(loan);
+                    iterator.remove();
                 }
             }
         }

@@ -41,6 +41,7 @@ public class Loan
     {
         city.spend(yearlyCost);
         unpaidBalance -= yearlyDeduct;
+        yearsLeft -= 1;
     }
 
     public void payFull()
