@@ -18,6 +18,11 @@ public class LoansDialog extends JDialog
 	JLabel selectionCostVal = new JLabel(formatFunds(0));
 	JLabel selectionMaxVal = new JLabel(formatFunds(0));
 
+	JLabel payVal;
+	JLabel insuffText;
+
+	int payNowTotal = 0;
+
     static ResourceBundle strings = MainWindow.strings;
 
     public LoansDialog(Window owner, Micropolis engine)
@@ -180,20 +185,18 @@ public class LoansDialog extends JDialog
 		int loanNum = 0;
 		for (Loan loan : engine.loansManager.activeLoans) {
 			loanNum++;
-			// FIXME: probably won't be able to access each particular loan with checkbox
-			/*
-			could maybe keep simple for-loop 'printing' of values, but define checkboxes
-			at higher scope (like new loan values) and in some enumerated / iterable way.
-			have this for-loop draw those checkboxes in order.
-			then when 'checking' a box, it has an ordered value that's associable with
-			the particular row # it was drawn on, which tells us the position to look at
-			in the activeLoans list. we can grab the loan properties from there.
-			*/
+
 			JLabel loanNumVal = new JLabel(String.valueOf(loanNum));
 			JLabel loanUnpaidVal = new JLabel(formatFunds(loan.unpaidBalance));
 			JLabel loanCostVal = new JLabel(formatFunds(loan.yearlyCost));
 			JLabel loanTimeVal = new JLabel(String.valueOf(loan.yearsLeft));
 			JCheckBox payNowCBox = new JCheckBox();
+
+			payNowCBox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ev) {
+					loan.isChecked = ((JCheckBox) ev.getSource()).isSelected();
+					onCBoxClicked();
+				}});
 
 			loanNumVal.setHorizontalAlignment(SwingConstants.CENTER);
 			loanUnpaidVal.setHorizontalAlignment(SwingConstants.CENTER);
@@ -237,11 +240,8 @@ public class LoansDialog extends JDialog
 		JPanel payPanel = new JPanel();
 		finalizePane.add(payPanel);
 
-		// sum selected loans
-		int paySelected = 0;
-
 		JLabel payLbl = new JLabel(strings.getString("loansdlg.finalize_amt"));
-		JLabel payVal = new JLabel(formatFunds(paySelected));
+		payVal = new JLabel(formatFunds(payNowTotal));
 		payPanel.add(payLbl);
 		payPanel.add(payVal);
 
@@ -249,15 +249,14 @@ public class LoansDialog extends JDialog
 		JPanel insuffPanel = new JPanel();
 		finalizePane.add(insuffPanel);
 
-		// FIXME: insuffPanel needs to be defined at higher scope to be affected elsewhere
-		JLabel insuffText = new JLabel(strings.getString("loansdlg.finalize_insufficient"));
+		insuffText = new JLabel(strings.getString("loansdlg.finalize_insufficient"));
 		insuffText.setFont(insuffText.getFont().deriveFont(Font.ITALIC));
 		insuffText.setForeground(Color.red);
-		insuffPanel.setVisible(false);
+		insuffText.setVisible(false);
 
 		insuffPanel.add(insuffText);
 
-		// "continue" and "cancel" buttons
+		// "CONTINUE" AND "CANCEL"
 		JPanel buttonsPanel = new JPanel();
 		finalizePane.add(buttonsPanel);
 
@@ -290,6 +289,19 @@ public class LoansDialog extends JDialog
 		selectionMaxVal.setText(formatFunds(selectionMax));
 	}
 
+	private void onCBoxClicked()
+	{
+		payNowTotal = 0;
+
+		for (Loan loan : engine.loansManager.activeLoans) {
+			if (loan.isChecked) {
+				payNowTotal += loan.unpaidBalance;
+			}
+		}
+
+		payVal.setText(formatFunds(payNowTotal));
+	}
+
     private void onWithdrawClicked()
 	{
 		int initAmt = ((Number) selectionSlider.getValue()).intValue();
@@ -304,8 +316,25 @@ public class LoansDialog extends JDialog
 	private void onContinueClicked()
 	{
 		// if sufficient funds, apply "pay now" amt and close window
-		dispose();
+		if (engine.budget.totalFunds >= payNowTotal) {
+			Iterator<Loan> iterator = engine.loansManager.activeLoans.iterator();
+
+			while (iterator.hasNext()) {
+				Loan loan = iterator.next();
+
+				if (loan.isChecked) {
+					loan.payFull();
+					iterator.remove();
+				}
+			}
+
+			dispose();
+		}
 		// else display "insufficient funds"
+		else {
+			insuffText.setVisible(true);
+			pack();
+		}
     }
 
 	private void onCancelClicked()

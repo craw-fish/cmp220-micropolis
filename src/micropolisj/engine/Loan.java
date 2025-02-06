@@ -22,6 +22,8 @@ public class Loan
     public int yearlyCost;
     // portion of yearly payments that actually deduct from unpaidBalance
     int yearlyDeduct;
+    // is the "pay now" box for this loan checked in loansDialog?
+    public boolean isChecked;
 
     public Loan(Micropolis city, int withdrawTime, int initAmt, int unpaidBalance, double interest, int payPeriod, int yearsLeft, int maxDue, int yearlyCost, int yearlyDeduct)
     {
