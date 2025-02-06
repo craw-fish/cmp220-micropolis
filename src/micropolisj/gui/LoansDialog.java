@@ -294,9 +294,11 @@ public class LoansDialog extends JDialog
 	{
 		int initAmt = ((Number) selectionSlider.getValue()).intValue();
 
-		engine.loansManager.startLoan(initAmt);
-		selectionSlider.setValue(0);
-		// FIXME: update active loans display here
+		if (initAmt > 0 && engine.loansManager.activeLoans.size() < 3) {
+			engine.loansManager.startLoan(initAmt);
+			selectionSlider.setValue(0);
+			// TODO: update active loans display here
+		}
     }
 
 	private void onContinueClicked()

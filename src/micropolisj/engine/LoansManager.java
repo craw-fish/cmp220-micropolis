@@ -33,24 +33,22 @@ public class LoansManager {
 
     public void startLoan(int initAmt)
     {
-        if (initAmt > 0 && activeLoans.size() < 3) {
-            int withdrawTime = city.cityTime;
-            int unpaidBalance = initAmt;
-            double interest = getInterest();
-            int payPeriod = getPayPeriod();
-            int yearsLeft = payPeriod;
-            int maxDue = (int)Math.round(initAmt * (1 + interest));
-            int yearlyCost = (int)Math.round(maxDue / payPeriod);
-            int yearlyDeduct = (int)Math.round(initAmt / payPeriod);
+        assert (initAmt > 0 && activeLoans.size() < 3);
 
-            // FIXME: this contributes neg amt to "Capital Expenditures" in budget - OK?
-            city.spend(-initAmt);
+        int withdrawTime = city.cityTime;
+        int unpaidBalance = initAmt;
+        double interest = getInterest();
+        int payPeriod = getPayPeriod();
+        int yearsLeft = payPeriod;
+        int maxDue = (int)Math.round(initAmt * (1 + interest));
+        int yearlyCost = (int)Math.round(maxDue / payPeriod);
+        int yearlyDeduct = (int)Math.round(initAmt / payPeriod);
 
-            Loan loan = new Loan(city, withdrawTime, initAmt, unpaidBalance, interest, payPeriod, yearsLeft, maxDue, yearlyCost, yearlyDeduct);
-            activeLoans.add(loan);
-        }
+        // FIXME: this contributes neg amt to "Capital Expenditures" in budget - OK?
+        city.spend(-initAmt);
 
-        // else do nothing, forget this loan
+        Loan loan = new Loan(city, withdrawTime, initAmt, unpaidBalance, interest, payPeriod, yearsLeft, maxDue, yearlyCost, yearlyDeduct);
+        activeLoans.add(loan);
     }
 
     public double getInterest()
