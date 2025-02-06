@@ -89,4 +89,26 @@ public class LoansManager {
             }
         }
     }
+
+    public int getTotalUnpaid()
+    {
+        int total = 0;
+
+        for (Loan loan : activeLoans) {
+            total += loan.unpaidBalance;
+        }
+
+        return total;
+    }
+
+    public int getTotalCost()
+    {
+        int total = 0;
+
+        for (Loan loan : activeLoans) {
+            total += loan.yearlyCost;
+        }
+
+        return total;
+    }
 }

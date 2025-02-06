@@ -18,10 +18,15 @@ public class LoansDialog extends JDialog
 	JLabel selectionCostVal = new JLabel(formatFunds(0));
 	JLabel selectionMaxVal = new JLabel(formatFunds(0));
 
+	JLabel totalUnpaidVal;
+	JLabel totalCostVal;
+
 	JLabel payVal;
 	JLabel insuffText;
 
-	int payNowTotal = 0;
+	int totalUnpaid;
+	int totalCost;
+	int totalPayNow = 0;
 
     static ResourceBundle strings = MainWindow.strings;
 
@@ -211,13 +216,12 @@ public class LoansDialog extends JDialog
 		}
 
 		// totals
-		// sum list vals
-		int totalUnpaid = 0;
-		int totalCost = 0;
+		totalUnpaid = engine.loansManager.getTotalUnpaid();
+		totalCost = engine.loansManager.getTotalCost();
 
 		JLabel totalLbl = new JLabel("Total");
-		JLabel totalUnpaidVal = new JLabel(formatFunds(totalUnpaid));
-		JLabel totalCostVal = new JLabel(formatFunds(totalCost));
+		totalUnpaidVal = new JLabel(formatFunds(totalUnpaid));
+		totalCostVal = new JLabel(formatFunds(totalCost));
 		totalLbl.setFont(totalLbl.getFont().deriveFont(Font.ITALIC));
 		totalUnpaidVal.setFont(totalUnpaidVal.getFont().deriveFont(Font.ITALIC));
 		totalCostVal.setFont(totalCostVal.getFont().deriveFont(Font.ITALIC));
@@ -241,7 +245,7 @@ public class LoansDialog extends JDialog
 		finalizePane.add(payPanel);
 
 		JLabel payLbl = new JLabel(strings.getString("loansdlg.finalize_amt"));
-		payVal = new JLabel(formatFunds(payNowTotal));
+		payVal = new JLabel(formatFunds(totalPayNow));
 		payPanel.add(payLbl);
 		payPanel.add(payVal);
 
@@ -291,15 +295,15 @@ public class LoansDialog extends JDialog
 
 	private void onCBoxClicked()
 	{
-		payNowTotal = 0;
+		totalPayNow = 0;
 
 		for (Loan loan : engine.loansManager.activeLoans) {
 			if (loan.isChecked) {
-				payNowTotal += loan.unpaidBalance;
+				totalPayNow += loan.unpaidBalance;
 			}
 		}
 
-		payVal.setText(formatFunds(payNowTotal));
+		payVal.setText(formatFunds(totalPayNow));
 	}
 
     private void onWithdrawClicked()
@@ -310,13 +314,19 @@ public class LoansDialog extends JDialog
 			engine.loansManager.startLoan(initAmt);
 			selectionSlider.setValue(0);
 			// TODO: update active loans display here
+
+			// update totals
+			totalUnpaid = engine.loansManager.getTotalUnpaid();
+			totalCost = engine.loansManager.getTotalCost();
+			totalUnpaidVal.setText(formatFunds(totalUnpaid));
+			totalCostVal.setText(formatFunds(totalCost));
 		}
     }
 
 	private void onContinueClicked()
 	{
 		// if sufficient funds, apply "pay now" amt and close window
-		if (engine.budget.totalFunds >= payNowTotal) {
+		if (engine.budget.totalFunds >= totalPayNow) {
 			Iterator<Loan> iterator = engine.loansManager.activeLoans.iterator();
 
 			while (iterator.hasNext()) {
